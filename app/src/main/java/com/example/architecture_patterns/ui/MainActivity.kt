@@ -9,14 +9,18 @@ import android.widget.TextView
 import com.example.architecture_patterns.R
 import com.example.architecture_patterns.data.MovieModel
 
-class MainActivity : AppCompatActivity(), OnClickListener {
+class MainActivity : AppCompatActivity(), OnClickListener, MovieView {
 
     private lateinit var btnGetMovieName : Button
     private lateinit var tvMovieName : TextView
 
+    private lateinit var moviePresenter: MoviePresenter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        moviePresenter = MoviePresenter(this)
 
         tvMovieName = findViewById(R.id.tvName)
         btnGetMovieName = findViewById(R.id.button)
@@ -26,15 +30,11 @@ class MainActivity : AppCompatActivity(), OnClickListener {
 
     override fun onClick(view: View) {
         if (view.id == R.id.button) {
-            getMovie()
+            moviePresenter.getMovieName()
         }
     }
 
-    private fun getMovieFromDB() : MovieModel {
-        return MovieModel("Venom")
-    }
-
-    private fun getMovie() {
-        tvMovieName.text = getMovieFromDB().name
+    override fun onGetMovieName(name: String) {
+        tvMovieName.text = name
     }
 }
